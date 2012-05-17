@@ -43,7 +43,7 @@ namespace Tavis {
             var link = new Link() { Target = new Uri("http://localtmserver:8700/api/locweldlocal/Assemblies?RootAssembly=true{&workorder}") };
             
             //Act
-            link.AddParameter("workorder","W1542");
+            link.SetParameter("workorder","W1542");
 
             var req = link.CreateRequest();
             //Assert
