@@ -67,10 +67,10 @@ namespace Tavis {
         }
 
 
-        public class MyMediaTypeFormatter : MediaTypeFormatter {
+        //public class MyMediaTypeFormatter : MediaTypeFormatter {
 
             
-        }
+        //}
 
         public class Foo {
             public string Name { get; set;}
@@ -112,8 +112,7 @@ namespace Tavis {
 
             //Assert
             Assert.IsNotNull(xElement);
-            Assert.AreEqual(@"﻿<?xml version=""1.0"" encoding=""utf-8""?>
-<Hello>World</Hello>", result);
+            Assert.IsTrue(result.EndsWith("<Hello>World</Hello>"));
             
         }
 
@@ -149,6 +148,7 @@ namespace Tavis {
 
         }
     }
+
 
     public static class HttpContentExtensions {
         

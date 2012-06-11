@@ -12,7 +12,10 @@ namespace Tavis.Tools {
         }
 
 
-        protected override System.Threading.Tasks.Task<object> OnReadFromStreamAsync(Type type, Stream stream, HttpContentHeaders contentHeaders, FormatterContext formatterContext)
+        
+
+
+        public override System.Threading.Tasks.Task<object> ReadFromStreamAsync(Type type, Stream stream, HttpContentHeaders contentHeaders, IFormatterLogger formatterLogger)
         {
             return new TaskFactory<object>().StartNew(() =>
                                                           {
@@ -20,7 +23,7 @@ namespace Tavis.Tools {
                                                           });
         }
 
-        protected override System.Threading.Tasks.Task OnWriteToStreamAsync(Type type, object value, Stream stream, HttpContentHeaders contentHeaders, FormatterContext formatterContext, TransportContext transportContext)
+        public override System.Threading.Tasks.Task WriteToStreamAsync(Type type, object value, Stream stream, HttpContentHeaders contentHeaders, TransportContext transportContext)
         {
             return new TaskFactory().StartNew(() =>
                                                           {
@@ -28,6 +31,16 @@ namespace Tavis.Tools {
                                                           });
 
             
+        }
+
+        public override bool CanReadType(Type type)
+        {
+            return type.Name == "System.String";
+        }
+
+        public override bool CanWriteType(Type type)
+        {
+            return type.Name == "System.String";
         }
     }
 }

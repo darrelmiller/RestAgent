@@ -29,13 +29,13 @@ namespace Tavis.Tools {
         protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
             // FormatterContext is required by XmlMediaTypeFormatter, but is not used by WriteToStreamAsync of XmlMediaTypeFormatter!
-            return _formatter.WriteToStreamAsync(typeof(T), _outboundInstance, stream, this.Headers, new FormatterContext(new MediaTypeHeaderValue("application/bogus"), false), null);
+            return _formatter.WriteToStreamAsync(typeof(T), _outboundInstance, stream, this.Headers, null);
         }
 
         public Task<T> ReadAsync()
         {
             return this.ReadAsStreamAsync()
-                .ContinueWith<object>(streamTask => _formatter.ReadFromStreamAsync(typeof(T), streamTask.Result, _inboundContent.Headers, new FormatterContext(new MediaTypeHeaderValue("application/bogus"), false)))
+                .ContinueWith<object>(streamTask => _formatter.ReadFromStreamAsync(typeof(T), streamTask.Result, _inboundContent.Headers,  null))
                 .ContinueWith<T>(objectTask => (T)((Task<object>)(objectTask.Result)).Result);
         }
 

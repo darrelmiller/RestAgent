@@ -10,14 +10,27 @@ namespace Tavis.Fakes {
 
         public readonly Dictionary<string, Link> Links = new Dictionary<string, Link>();
 
-        protected override System.Threading.Tasks.Task<object> OnReadFromStreamAsync(Type type, Stream stream, System.Net.Http.Headers.HttpContentHeaders contentHeaders, FormatterContext formatterContext)
+
+
+
+        public override System.Threading.Tasks.Task WriteToStreamAsync(Type type, object value, Stream stream, System.Net.Http.Headers.HttpContentHeaders contentHeaders, TransportContext transportContext)
         {
-            return base.OnReadFromStreamAsync(type, stream, contentHeaders, formatterContext);
+            return base.WriteToStreamAsync(type, value, stream, contentHeaders, transportContext);
         }
 
-        protected override System.Threading.Tasks.Task OnWriteToStreamAsync(Type type, object value, Stream stream, System.Net.Http.Headers.HttpContentHeaders contentHeaders, FormatterContext formatterContext, TransportContext transportContext)
+        public override bool CanReadType(Type type)
         {
-            return base.OnWriteToStreamAsync(type, value, stream, contentHeaders, formatterContext, transportContext);
+            return true;
+        }
+
+        public override bool CanWriteType(Type type)
+        {
+            return true;
+        }
+
+        public override System.Threading.Tasks.Task<object> ReadFromStreamAsync(Type type, Stream stream, System.Net.Http.Headers.HttpContentHeaders contentHeaders, IFormatterLogger formatterLogger)
+        {
+            return base.ReadFromStreamAsync(type, stream, contentHeaders, formatterLogger);
         }
     }
 
