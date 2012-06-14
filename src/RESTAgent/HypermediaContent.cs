@@ -65,6 +65,8 @@ namespace Tavis {
 
 		private MediaTypeFormatter GetFormatter(string mediaType)
 		{
+            if (_SemanticsRegistry == null) return null;
+
 			var formatter = _SemanticsRegistry.Formatters.FirstOrDefault(
 				f => f.SupportedMediaTypes.Select(m => m.MediaType).Contains(mediaType)
 			);
@@ -76,15 +78,19 @@ namespace Tavis {
 
 		private object ReadContent(HttpContent content)
 		{
-			MediaTypeFormatter formatter = GetFormatter(MediaType);
 
-            if (formatter != null) {
-                var objectContent = new SimpleObjectContent<object>(content, formatter);
-                return objectContent.ReadAsync().Result;
-            } else {
-                var stream = new MemoryStream();
-                content.CopyToAsync(stream).RunSynchronously();
-                stream.Position = 0;
+            var stream = new MemoryStream();
+            content.CopyToAsync(stream).Wait();
+            stream.Position = 0;
+
+            MediaTypeFormatter formatter = GetFormatter(MediaType);
+
+            if (formatter != null)
+            {
+                return formatter.ReadFromStreamAsync(typeof(object), stream, content.Headers, null).Result;
+            } 
+            else
+            {
                 return stream;
 
             }

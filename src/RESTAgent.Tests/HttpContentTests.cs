@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tavis.Tools;
 
 namespace Tavis {
     [TestClass]
@@ -25,6 +27,70 @@ namespace Tavis {
             Assert.AreEqual("Hello World",content.ReadAsStringAsync().Result);
 
         }
+
+        [TestMethod]
+        public void CreateHypermediaContent()
+        {
+
+            //Arrange
+            var stringcontent = new StringContent("Hi you");
+            //Act
+            var content = new HypermediaContent(null, stringcontent,null);
+
+            //Assert
+            Assert.IsNotNull(content);
+            Assert.AreEqual("Hi you", new StreamReader((Stream)content.Value).ReadToEnd());
+
+        }
+
+
+        [TestMethod]
+        public void CreateHypermediaContentInTask()
+        {
+
+            //Arrange
+            var stringcontent = new StringContent("Hi you");
+
+            //Act
+            var task = new TaskFactory<Stream>()
+                .StartNew(() => { var content = new HypermediaContent(null, stringcontent, null);
+                                     return (Stream) content.Value;
+                });
+
+            var result = task.Result;
+
+            //Assert
+            
+            Assert.AreEqual("Hi you", new StreamReader(result).ReadToEnd());
+
+        }
+
+
+
+        [TestMethod]
+        public void ObjectContentShouldReturnAnObject()
+        {
+
+            //Arrange
+            var ms = new MemoryStream();
+            var sw = new StreamWriter(ms);
+            sw.Write("Hi you");
+            sw.Flush();
+            
+            var streamcontent = new StreamContent(ms);
+            streamcontent.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+
+            //Act
+            var value = streamcontent.ReadAsAsync<object>(new List<MediaTypeFormatter>() {new PlainTextFormatter()}).Result;
+
+            
+
+            //Assert
+
+            Assert.IsInstanceOfType(value,typeof(string));
+
+        }
+
 
         //[Ignore]
         //[TestMethod]

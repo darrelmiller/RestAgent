@@ -35,12 +35,12 @@ namespace Tavis.Tools {
 
         public override bool CanReadType(Type type)
         {
-            return type.Name == "System.String";
+            return true;
         }
 
         public override bool CanWriteType(Type type)
         {
-            return type.Name == "System.String";
+            return true;
         }
     }
 }
