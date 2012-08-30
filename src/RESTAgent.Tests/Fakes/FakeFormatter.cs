@@ -13,9 +13,9 @@ namespace Tavis.Fakes {
 
 
 
-        public override System.Threading.Tasks.Task WriteToStreamAsync(Type type, object value, Stream stream, System.Net.Http.Headers.HttpContentHeaders contentHeaders, TransportContext transportContext)
+        public override System.Threading.Tasks.Task WriteToStreamAsync(Type type, object value, Stream stream, System.Net.Http.HttpContent content, TransportContext transportContext)
         {
-            return base.WriteToStreamAsync(type, value, stream, contentHeaders, transportContext);
+            return base.WriteToStreamAsync(type, value, stream, content, transportContext);
         }
 
         public override bool CanReadType(Type type)
@@ -28,9 +28,9 @@ namespace Tavis.Fakes {
             return true;
         }
 
-        public override System.Threading.Tasks.Task<object> ReadFromStreamAsync(Type type, Stream stream, System.Net.Http.Headers.HttpContentHeaders contentHeaders, IFormatterLogger formatterLogger)
+        public override System.Threading.Tasks.Task<object> ReadFromStreamAsync(Type type, Stream stream, System.Net.Http.HttpContent content, IFormatterLogger formatterLogger)
         {
-            return base.ReadFromStreamAsync(type, stream, contentHeaders, formatterLogger);
+            return base.ReadFromStreamAsync(type, stream, content, formatterLogger);
         }
     }
 

@@ -87,7 +87,8 @@ namespace Tavis {
 
             if (formatter != null)
             {
-                return formatter.ReadFromStreamAsync(typeof(object), stream, content.Headers, null).Result;
+
+                return formatter.ReadFromStreamAsync(typeof(object), stream, content, null).Result;
             } 
             else
             {
